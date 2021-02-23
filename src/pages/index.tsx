@@ -1,9 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
+import Head from 'next/head'
 
 import ExperienceBar from '../components/ExperienceBar'
 import Profile from '../components/Profile'
 import CompletedChallenges from '../components/CompletedChallenges'
+import Countdown from '../components/Countdown'
 
 const Container = styled.div`
   height: 100vh;
@@ -27,12 +29,17 @@ const Container = styled.div`
 export default function Home(): JSX.Element {
   return (
     <Container>
+      <Head>
+        <title>Inicio | move.it</title>
+      </Head>
+
       <ExperienceBar />
 
       <section>
         <div>
           <Profile />
           <CompletedChallenges />
+          <Countdown />
         </div>
         <div></div>
       </section>
