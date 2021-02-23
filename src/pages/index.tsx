@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import ExperienceBar from '../components/ExperienceBar'
 import Profile from '../components/Profile'
+import CompletedChallenges from '../components/CompletedChallenges'
 
 const Container = styled.div`
   height: 100vh;
@@ -31,6 +32,7 @@ export default function Home(): JSX.Element {
       <section>
         <div>
           <Profile />
+          <CompletedChallenges />
         </div>
         <div></div>
       </section>
