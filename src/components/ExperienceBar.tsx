@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import {useChallengesContenxt} from '../context/ChallengesContext'
 
 const StyledBar = styled.header`
   display: flex;
@@ -31,15 +32,22 @@ const StyledBar = styled.header`
 `
 
 export default function ExperienceBar() {
+  const {currentExperience, experienceToNextLevel} = useChallengesContenxt()
+
+  const percentToNextLevel =
+    Math.round(currentExperience * 100) / experienceToNextLevel
+
   return (
     <StyledBar>
-      <span>0 px</span>
+      <span>{currentExperience} px</span>
       <div>
-        <div style={{width: '50%'}} />
+        <div style={{width: `${percentToNextLevel}%`}} />
 
-        <span style={{left: '50%'}}>300xp</span>
+        <span style={{left: `${percentToNextLevel}%`}}>
+          {currentExperience} xp
+        </span>
       </div>
-      <span>600 px</span>
+      <span>{experienceToNextLevel} px</span>
     </StyledBar>
   )
 }

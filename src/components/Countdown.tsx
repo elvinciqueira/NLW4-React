@@ -1,5 +1,7 @@
+import React from 'react'
 import {useState, useEffect} from 'react'
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
+import {useChallengesContenxt} from '../context/ChallengesContext'
 
 const Container = styled.div`
   display: flex;
@@ -40,7 +42,11 @@ const Container = styled.div`
   }
 `
 
-const Button = styled.button`
+interface ButtonProps {
+  active: boolean
+}
+
+const Button = styled.button<ButtonProps>`
   width: 100%;
   height: 5rem;
 
@@ -61,14 +67,39 @@ const Button = styled.button`
 
   transition: background-color 0.3s;
 
-  &:hover {
+  &:not(:disabled):hover {
     background-color: var(--blue-dark);
   }
+
+  &:disabled {
+    background-color: var(--white);
+    color: var(--text);
+    border-bottom: 6px solid var(--green);
+    cursor: not-allowed;
+  }
+
+  ${(props) => {
+    if (props.active) {
+      return css`
+        background-color: var(--white);
+        color: var(--title);
+
+        &:not(:disabled):hover {
+          background-color: var(--red);
+          color: var(--white);
+        }
+      `
+    }
+  }}
 `
 
+let countdownTimeout: NodeJS.Timeout
+
 export default function Countdown() {
-  const [time, setTime] = useState(25 * 60)
-  const [active, setActive] = useState(false)
+  const {startNewChallenges} = useChallengesContenxt()
+  const [time, setTime] = useState(0.1 * 60)
+  const [isActive, setIsActive] = useState(false)
+  const [hasFinished, setHasFinished] = useState(false)
 
   const minutes = Math.floor(time / 60)
   const seconds = time % 60
@@ -76,17 +107,25 @@ export default function Countdown() {
   const [minuteLeft, minuteRight] = String(minutes).padStart(2, '0').split('')
   const [secondLeft, secondRight] = String(seconds).padStart(2, '0').split('')
 
+  const startCountdown = () => setIsActive(true)
+
+  const resetCountdown = () => {
+    clearTimeout(countdownTimeout)
+    setIsActive(false)
+    setTime(25 * 60)
+  }
+
   useEffect(() => {
-    if (active && time > 0) {
-      setTimeout(() => {
+    if (isActive && time > 0) {
+      countdownTimeout = setTimeout(() => {
         setTime(time - 1)
       }, 1000)
+    } else if (isActive && time === 0) {
+      setHasFinished(true)
+      setIsActive(false)
+      startNewChallenges()
     }
-  }, [active, time])
-
-  function startCountdown() {
-    setActive(true)
-  }
+  }, [isActive, time])
 
   return (
     <>
@@ -102,9 +141,23 @@ export default function Countdown() {
         </div>
       </Container>
 
-      <Button type="button" onClick={startCountdown}>
-        Iniciar um ciclo
-      </Button>
+      {hasFinished ? (
+        <Button active={isActive} disabled>
+          Ciclo encerrado
+        </Button>
+      ) : (
+        <>
+          {isActive ? (
+            <Button type="button" active={isActive} onClick={resetCountdown}>
+              Abandonar Ciclo
+            </Button>
+          ) : (
+            <Button type="button" active={isActive} onClick={startCountdown}>
+              Iniciar Ciclo
+            </Button>
+          )}
+        </>
+      )}
     </>
   )
 }

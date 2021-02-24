@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import {useChallengesContenxt} from '../context/ChallengesContext'
 
 const Container = styled.div`
   display: flex;
@@ -21,10 +22,12 @@ const Container = styled.div`
 `
 
 export default function CompletedChallenges() {
+  const {challengesCompleted} = useChallengesContenxt()
+
   return (
     <Container>
       <span>Desafios completos</span>
-      <span>5</span>
+      <span>{challengesCompleted}</span>
     </Container>
   )
 }
