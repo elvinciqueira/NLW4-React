@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import {useChallengesContenxt} from '../context/ChallengesContext'
 
 const Container = styled.div`
   display: flex;
@@ -33,6 +34,8 @@ const Container = styled.div`
 `
 
 export default function Profile() {
+  const {level} = useChallengesContenxt()
+
   return (
     <Container>
       <img src="https://github.com/elvinciqueira.png" alt="Elvin Ciqueira" />
@@ -41,7 +44,7 @@ export default function Profile() {
         <strong>Elvin Ciqueira</strong>
         <p>
           <img src="icons/level.svg" alt="Level" />
-          Level 1
+          Level {level}
         </p>
       </div>
     </Container>

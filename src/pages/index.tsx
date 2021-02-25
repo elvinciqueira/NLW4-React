@@ -8,6 +8,8 @@ import CompletedChallenges from '../components/CompletedChallenges'
 import Countdown from '../components/Countdown'
 import ChallengeBox from '../components/ChallengeBox'
 
+import {CountdownProvider} from '../context/CountdownContext'
+
 const Container = styled.div`
   height: 100vh;
   max-width: 992px;
@@ -36,16 +38,18 @@ export default function Home(): JSX.Element {
 
       <ExperienceBar />
 
-      <section>
-        <div>
-          <Profile />
-          <CompletedChallenges />
-          <Countdown />
-        </div>
-        <div>
-          <ChallengeBox />
-        </div>
-      </section>
+      <CountdownProvider>
+        <section>
+          <div>
+            <Profile />
+            <CompletedChallenges />
+            <Countdown />
+          </div>
+          <div>
+            <ChallengeBox />
+          </div>
+        </section>
+      </CountdownProvider>
     </Container>
   )
 }

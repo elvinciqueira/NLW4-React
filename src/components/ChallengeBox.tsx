@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import {useChallengesContenxt} from '../context/ChallengesContext'
+import {useCountdownContext} from '../context/CountdownContext'
 
 const Container = styled.div`
   height: 100%;
@@ -105,7 +106,22 @@ const Button = styled.button`
 `
 
 export default function ChallengeBox() {
-  const {activeChallenge, resetChallenge} = useChallengesContenxt()
+  const {
+    activeChallenge,
+    resetChallenge,
+    completeChallenge,
+  } = useChallengesContenxt()
+  const {resetCountdown} = useCountdownContext()
+
+  const handleChallengeSucceded = () => {
+    completeChallenge()
+    resetCountdown()
+  }
+
+  const handleChallengeFailed = () => {
+    resetChallenge()
+    resetCountdown()
+  }
 
   return (
     <Container>
@@ -126,11 +142,15 @@ export default function ChallengeBox() {
             <Button
               type="button"
               style={{backgroundColor: '#e83f5d'}}
-              onClick={resetChallenge}
+              onClick={handleChallengeFailed}
             >
               Falhei
             </Button>
-            <Button type="button" style={{backgroundColor: '#4cd62b'}}>
+            <Button
+              type="button"
+              style={{backgroundColor: '#4cd62b'}}
+              onClick={handleChallengeSucceded}
+            >
               Completei
             </Button>
           </footer>
