@@ -2,7 +2,6 @@ import {AppProps} from 'next/dist/next-server/lib/router/router'
 import Head from 'next/head'
 import React, {Fragment} from 'react'
 import GlobalStyle from '../theme/GlobalStyle'
-import {ChallengesProvider} from '../context/ChallengesContext'
 
 export default function App({Component, pageProps}: AppProps): JSX.Element {
   return (
@@ -17,9 +16,7 @@ export default function App({Component, pageProps}: AppProps): JSX.Element {
       </Head>
       <GlobalStyle />
 
-      <ChallengesProvider>
-        <Component {...pageProps} />
-      </ChallengesProvider>
+      <Component {...pageProps} />
     </Fragment>
   )
 }
